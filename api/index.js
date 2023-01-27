@@ -17,7 +17,7 @@ con.connect(function(err) {
   }  
 });
 
-app.get('/', (req, res) =>{
+app.get('/api', (req, res) =>{
   con.query('SELECT VALOR, DATA_COMPRA, DESCRICAO, NOME, TIPO FROM despesas INNER JOIN categorias ON categorias.id = categoria_id INNER JOIN tipo_pagamento ON tipo_pagamento.id = tipo_pagamento_id WHERE year(data_compra)= year(curdate()) AND MONTH(data_compra) = month(curdate())', (err,result)=>{
     res.send({message: result});
   });
