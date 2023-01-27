@@ -35,6 +35,6 @@ app.get('/pagamentos', (req, res) =>{
   });
 });
 
-app.listen(PORT, () =>{
+/*app.listen(PORT, () =>{
   console.log(`Running in http://localhost:${PORT}`)
-});
+});*/
