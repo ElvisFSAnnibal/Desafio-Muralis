@@ -82,3 +82,4 @@ app.post('/api/despesas', (req, res) =>{
     }
   );
 });
+module.exports = app;
