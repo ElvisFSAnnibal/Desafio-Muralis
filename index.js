@@ -1,15 +1,15 @@
 const express = require('express');
 const app = express();
+const PORT = 80;
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const moment = require('moment');
-module.exports = app;
 
 const con = mysql.createConnection({
-  host: 'sql10.freemysqlhosting.net',
-  user: 'sql10593821',
-  password:'qsewpPkAhY',
-  database:'sql10593821'
+  host: 'localhost',
+  user: 'root',
+  password:'1234',
+  database:'despesas'
 });
 con.connect(function(err) {
   if (err) {
@@ -19,8 +19,12 @@ con.connect(function(err) {
   }  
 });
 
+app.listen(PORT, () =>{
+  console.log(`Running in http://localhost:${PORT}`)
+});
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+
 
 app.get('/api/despesas', (req, res) =>{
   con.query(
@@ -49,6 +53,7 @@ app.get('/api/despesas', (req, res) =>{
       });
     });
   });
+
 
 app.post('/api/despesas', (req, res) =>{
   let valor = req.body.valor;
@@ -83,3 +88,44 @@ app.post('/api/despesas', (req, res) =>{
     }
   );
 });
+
+/*app.post('/api/despesas', (req, res) =>{
+  con.query(
+    `INSERT INTO despesas(
+      valor,
+      data_compra,descricao,
+      tipo_pagamento_id,
+      categoria_id
+      ) 
+    VALUES (
+      ${req.body.valor},
+      '${req.body.data_compra}',
+      '${req.body.descricao}',
+      ${req.body.tipo_pagamento_id},
+      ${req.body.categoria_id})`,
+    (err,result)=>{
+      let success = true;
+      if (err) {
+        console.error('error: ' + err.message)
+        success= false;
+      };
+      res.json({
+        "req": req.body,
+        "data":result.body.id,
+        "success":success
+      });
+  });
+});
+
+app.get('/categorias', (req, res) =>{
+  con.query('SELECT * FROM categorias', (err,result)=>{
+    res.send({result});
+  });
+});
+
+app.get('/pagamentos', (req, res) =>{
+  con.query('SELECT * FROM tipo_pagamento', (err,result)=>{
+    res.send({result});
+  });
+});
+*/
