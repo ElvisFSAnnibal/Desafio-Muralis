@@ -46,6 +46,10 @@ app.get('/api/despesas', (req, res) =>{
       let success = true;
       if(err){
         success= false;
+        res.json({
+          "data":null,
+          "success":success
+        });
       };
       res.json({
         "data":result,
@@ -80,6 +84,10 @@ app.post('/api/despesas', (req, res) =>{
       if(err){
         console.error('error: ' + err.message);
         success= false;
+        res.json({
+          "data":null,
+          "success":success
+        });
       };
       res.json({
         "data":result.insertId,
@@ -89,43 +97,51 @@ app.post('/api/despesas', (req, res) =>{
   );
 });
 
-/*app.post('/api/despesas', (req, res) =>{
+app.get('/api/ingressantes', (req, res) =>{
   con.query(
-    `INSERT INTO despesas(
-      valor,
-      data_compra,descricao,
-      tipo_pagamento_id,
-      categoria_id
-      ) 
-    VALUES (
-      ${req.body.valor},
-      '${req.body.data_compra}',
-      '${req.body.descricao}',
-      ${req.body.tipo_pagamento_id},
-      ${req.body.categoria_id})`,
-    (err,result)=>{
+    `select * from ingressantes`, 
+    (err,result) =>{
+      res.statusCode = 200;
+      res.setHeader('Content-type', 'application/json');
       let success = true;
-      if (err) {
-        console.error('error: ' + err.message)
+      if(err){
         success= false;
+        res.json({
+          "data":null,
+          "success":success
+        });
       };
       res.json({
-        "req": req.body,
-        "data":result.body.id,
+        "data":result,
         "success":success
       });
+    });
   });
-});
 
-app.get('/categorias', (req, res) =>{
-  con.query('SELECT * FROM categorias', (err,result)=>{
-    res.send({result});
+  app.post('/api/ingressantes', (req, res) =>{
+    con.query(
+      `INSERT INTO ingressantes (nome,curso,estado,cidade,) 
+      VALUES (
+        '${req.body.nome}',
+        '${req.body.curso}',
+        '${req.body.estado}',
+        '${req.body.cidade}')`, 
+       (err,result)=>{
+        res.statusCode = 200;
+        res.setHeader('Content-type', 'application/json');
+        let success = true;
+        if(err){
+          console.error('error: ' + err.message);
+          success= false;
+          res.json({
+            "data":null,
+            "success":success
+          });
+        };
+        res.json({
+          "data":result.insertId,
+          "success":success
+        });
+      }
+    );
   });
-});
-
-app.get('/pagamentos', (req, res) =>{
-  con.query('SELECT * FROM tipo_pagamento', (err,result)=>{
-    res.send({result});
-  });
-});
-*/

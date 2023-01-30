@@ -42,6 +42,10 @@ app.get('/api/despesas', (req, res) =>{
       let success = true;
       if(err){
         success= false;
+        res.json({
+          "data":null,
+          "success":success
+        });
       };
       res.json({
         "data":result,
@@ -75,6 +79,10 @@ app.post('/api/despesas', (req, res) =>{
       if(err){
         console.error('error: ' + err.message);
         success= false;
+        res.json({
+          "data":null,
+          "success":success
+        });
       };
       res.json({
         "data":result.insertId,
@@ -83,3 +91,52 @@ app.post('/api/despesas', (req, res) =>{
     }
   );
 });
+
+app.get('/api/ingressantes', (req, res) =>{
+  con.query(
+    `select * from ingressantes`, 
+    (err,result) =>{
+      res.statusCode = 200;
+      res.setHeader('Content-type', 'application/json');
+      let success = true;
+      if(err){
+        success= false;
+        res.json({
+          "data":null,
+          "success":success
+        });
+      };
+      res.json({
+        "data":result,
+        "success":success
+      });
+    });
+  });
+
+  app.post('/api/ingressantes', (req, res) =>{
+    con.query(
+      `INSERT INTO ingressantes (nome,curso,estado,cidade,) 
+      VALUES (
+        '${req.body.nome}',
+        '${req.body.curso}',
+        '${req.body.estado}',
+        '${req.body.cidade}')`, 
+       (err,result)=>{
+        res.statusCode = 200;
+        res.setHeader('Content-type', 'application/json');
+        let success = true;
+        if(err){
+          console.error('error: ' + err.message);
+          success= false;
+          res.json({
+            "data":null,
+            "success":success
+          });
+        };
+        res.json({
+          "data":result.insertId,
+          "success":success
+        });
+      }
+    );
+  });
