@@ -115,7 +115,7 @@ app.get('/api/ingressantes', (req, res) =>{
 
   app.post('/api/ingressantes', (req, res) =>{
     con.query(
-      `INSERT INTO ingressantes (nome,curso,estado,cidade,) 
+      `INSERT INTO ingressantes (nome,curso,estado,cidade) 
       VALUES (
         '${req.body.nome}',
         '${req.body.curso}',
